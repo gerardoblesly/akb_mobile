@@ -12,9 +12,11 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        buildConfigField("String", "token", '"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMzAxNGYxNzhjODJhOTRjMTM4NGFkMTk5ZTNjN2RlMTUyZDE2YTM1YmU5YzYyNDRjYzFmNWIwNjhiMmI3ZTdlYWFlOGQzZjgzYTA0MDA1ODkiLCJpYXQiOiIxNjIwNzI5MjIzLjUwOTM4MCIsIm5iZiI6IjE2MjA3MjkyMjMuNTA5NDA1IiwiZXhwIjoiMTY1MjI2NTIyMy40ODg4MzgiLCJzdWIiOiIxMSIsInNjb3BlcyI6W119.REB93Kv_r_mm09NTF42cSMg4CfaDaZBvS9ELROQ3cul3geKQdz59F6Iv0NqJbFMFKCWkX2GUGdXCCahAwxTC7sAWfTg5KU_2oHXP6Sm2yt5ywibsOpPq5cVWqsrFOTi4Fd-G29z0P60oD21lsmzUDajRVWCYuEw-eLCKderLbCttwRuvVLOkFHuNGs777tgQxAzdxWTVnEphcryT_y4CTG6n7T0NCNQQFbjZsN4U9_s0_UxW24Ow7xQNfisySQp61XYGJW3MSjAjYY7QggBsyi9QBj8aqaxLATqKfgPOFY-jlaEmFYkK11PeV3Kr0TpVEOT-5csGf6cPZDCor8X4ia7bV_fvuOnDWgv1JNBJoC7DGwlp1fyqUyS7aU_XA-CpIKfhRv64TwcmPhtkT1gSbjVHqcZrHAzMFQ7-YKQVaHPKdYYUGRHJQVXlCfbx1aw7vU8vGHI1wJj-hNQfHGd6BiMDBIiqj1xF4fkIH0O5A4A_0UeZHwEMrgQjnX7Gp2GZAhXMDb1LcobEqala6F8K8rfuIFUayL9UpTbittjYWB_yIDC65A-X5BA6iPM0KJVB076vFN1pNQbkSCQr8Lx0xGZexyTaIoiHpEK5Cj3t0VBuiAY4w-PxQdxYz-FvZRW3wnZBATfJi6seIWnkSnQq4J-q32t78fm1rT0fjKPztig"')
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+
 
     buildTypes {
         release {
@@ -34,13 +36,15 @@ android {
 }
 
 dependencies {
-
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    compile 'me.dm7.barcodescanner:zxing:1.9'
 
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation "com.google.android.material:material:1.2.0"

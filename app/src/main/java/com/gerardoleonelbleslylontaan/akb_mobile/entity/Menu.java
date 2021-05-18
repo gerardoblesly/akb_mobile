@@ -1,19 +1,45 @@
 package com.gerardoleonelbleslylontaan.akb_mobile.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class Menu implements Serializable {
 
+    @SerializedName("id_menu")
     private int id;
+
+    private String id_transaksi;
     private String nama_menu;
     private String deskripsi;
     private String takaran_saji;
     private String harga;
     private String kategori;
     private String unit;
-    private String id_bahan;
 
-    public Menu(int id, String nama_menu, String deskripsi, String takaran_saji, String harga, String kategori, String unit, String id_bahan) {
+    public String getId_transaksi() {
+        return id_transaksi;
+    }
+
+    public void setId_transaksi(String id_transaksi) {
+        this.id_transaksi = id_transaksi;
+    }
+
+    private String id_bahan;
+    private String urlPhoto;
+
+    @SerializedName("jumlah")
+    private int kuantitas=0;
+
+    public int getKuantitas() {
+        return kuantitas;
+    }
+
+    public void setKuantitas(int kuantitas) {
+        this.kuantitas = kuantitas;
+    }
+
+    public Menu(int id, String nama_menu, String deskripsi, String takaran_saji, String harga, String kategori, String unit, String id_bahan, String urlPhoto) {
         this.id = id;
         this.nama_menu = nama_menu;
         this.deskripsi = deskripsi;
@@ -22,6 +48,7 @@ public class Menu implements Serializable {
         this.kategori = kategori;
         this.unit = unit;
         this.id_bahan = id_bahan;
+        this.urlPhoto = urlPhoto;
     }
 
     public int getId() {
@@ -86,5 +113,13 @@ public class Menu implements Serializable {
 
     public void setId_bahan(String id_bahan) {
         this.id_bahan = id_bahan;
+    }
+
+    public String getUrlPhoto() {
+        return urlPhoto;
+    }
+
+    public void setUrlPhoto(String urlPhoto) {
+        this.urlPhoto = urlPhoto;
     }
 }

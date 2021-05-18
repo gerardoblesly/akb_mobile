@@ -1,16 +1,19 @@
-package com.gerardoleonelbleslylontaan.akb_mobile.menu;
+package com.gerardoleonelbleslylontaan.akb_mobile.pesanan;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -22,10 +25,9 @@ import com.android.volley.toolbox.Volley;
 import com.gerardoleonelbleslylontaan.akb_mobile.R;
 import com.gerardoleonelbleslylontaan.akb_mobile.api.MenuAPI;
 import com.gerardoleonelbleslylontaan.akb_mobile.entity.Menu;
-import com.gerardoleonelbleslylontaan.akb_mobile.pesanan.DetailPesanActivity;
-import com.gerardoleonelbleslylontaan.akb_mobile.pesanan.PesananActivity;
+import com.gerardoleonelbleslylontaan.akb_mobile.pesanan.AdapterPesanan;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.zxing.qrcode.encoder.QRCode;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,30 +38,56 @@ import java.util.List;
 
 import static com.android.volley.Request.Method.GET;
 
-public class MenuActivity extends AppCompatActivity {
+public class PesananActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private List<Menu> listMenu;
-    private AdapterMenu adapter;
+    private AdapterPesanan adapter;
     SearchView searchView;
     Context context;
     private Menu lastSelectedMenu;
-    FloatingActionButton btnQR;
+    FloatingActionButton btnOrder;
+    Button btnSelesai;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this.getApplicationContext();
-        setContentView(R.layout.activity_menu);
+        setContentView(R.layout.activity_pesanan);
         setAdapter();
         getMenu();
 
-        btnQR = findViewById(R.id.btnQR);
-        btnQR.setOnClickListener(new View.OnClickListener() {
+        btnSelesai = findViewById(R.id.btnSelesai);
+        btnSelesai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MenuActivity.this, QrCodeActivity.class));
-                finish();
+                startActivity(new Intent(PesananActivity.this, FinalCartActivity.class));
+            }
+        });
+
+
+        btnOrder = findViewById(R.id.btnOrder);
+        btnOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Menu> tempList = new ArrayList<>();
+                for(Menu menu: listMenu)
+                {
+                    if(menu.getKuantitas()!=0)
+                    {
+                        tempList.add(menu);
+                    }
+                }
+                if(tempList.isEmpty())
+                {
+                    Toast.makeText(PesananActivity.this, "Pesanan masih kosong!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Intent intent = new Intent(PesananActivity.this, OrderActivity.class);
+                    intent.putExtra("Order",new Gson().toJson(tempList));
+                    startActivityForResult(intent,200);
+                }
             }
         });
 
@@ -80,25 +108,48 @@ public class MenuActivity extends AppCompatActivity {
                     }
                 }
                 adapter.filtering(tempList);
+                adapter.filtering(tempList);
                 return true;
             }
         });
     }
 
+
     public void setAdapter(){
         listMenu = new ArrayList<Menu>();
         recyclerView = findViewById(R.id.rvMenu);
-        adapter = new AdapterMenu(listMenu, this.getApplicationContext(), new AdapterMenu.IClickable() {
+        adapter = new AdapterPesanan(listMenu, this.getApplicationContext(), new AdapterPesanan.IClickable() {
             @Override
             public void onMenuClick(Menu menu) {
-                Intent intent = new Intent(MenuActivity.this, DetailActivity.class);
+                Intent intent = new Intent(PesananActivity.this, DetailPesanActivity.class);
                 intent.putExtra("Menu",menu);
-                startActivity(intent);
+                lastSelectedMenu = menu;
+                startActivityForResult(intent, 100);
             }
         });
         recyclerView.setLayoutManager(new GridLayoutManager(this.getApplicationContext(),2));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==100 && resultCode==Activity.RESULT_OK)
+        {
+            if(data!=null)
+            {
+                String kuantitas = data.getStringExtra("Kuantitas");
+                lastSelectedMenu.setKuantitas(Integer.parseInt(kuantitas));
+            }
+        }
+
+        if(requestCode==200 && resultCode==Activity.RESULT_OK)
+        {
+            for(Menu menu : listMenu) {
+                menu.setKuantitas(0);
+            }
+        }
     }
 
     public void getMenu()
@@ -118,19 +169,19 @@ public class MenuActivity extends AppCompatActivity {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
 
-                            int id = jsonObject.optInt("id");
-                            String nama_menu = jsonObject.optString("nama_menu");
-                            String deskripsi = jsonObject.optString("deskripsi");
-                            String takaran_saji = jsonObject.optString("takaran_saji");
-                            String harga = jsonObject.optString("harga");
-                            String kategori = jsonObject.optString("kategori");
-                            String unit = jsonObject.optString("unit");
-                            String id_bahan = jsonObject.optString("id_bahan");
-                            String urlPhoto = jsonObject.optString("urlPhoto");
+                        int id = jsonObject.optInt("id");
+                        String nama_menu = jsonObject.optString("nama_menu");
+                        String deskripsi = jsonObject.optString("deskripsi");
+                        String takaran_saji = jsonObject.optString("takaran_saji");
+                        String harga = jsonObject.optString("harga");
+                        String kategori = jsonObject.optString("kategori");
+                        String unit = jsonObject.optString("unit");
+                        String id_bahan = jsonObject.optString("id_bahan");
+                        String urlPhoto = jsonObject.optString("urlPhoto");
 
-                            Menu menu = new Menu(id, nama_menu, deskripsi, takaran_saji, harga,kategori, unit, id_bahan, urlPhoto);
+                        Menu menu = new Menu(id, nama_menu, deskripsi, takaran_saji, harga,kategori, unit, id_bahan, urlPhoto);
 
-                            listMenu.add(menu);
+                        listMenu.add(menu);
                     }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
