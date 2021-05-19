@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.gerardoleonelbleslylontaan.akb_mobile.R;
 import com.gerardoleonelbleslylontaan.akb_mobile.entity.Menu;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class AdapterOrder extends RecyclerView.Adapter<AdapterOrder.OrderViewHolder>  {
@@ -45,7 +46,8 @@ public class AdapterOrder extends RecyclerView.Adapter<AdapterOrder.OrderViewHol
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         final Menu menu = listMenu.get(position);
         holder.nama_menu.setText(menu.getNama_menu());
-        holder.kuantitas.setText(String.valueOf(menu.getKuantitas()));
+        String tempText = "x" + String.valueOf(menu.getKuantitas());
+        holder.kuantitas.setText(tempText);
         Glide.with(holder.itemView.getContext()).load("http://192.168.18.6:8000/urlPhoto/"+ menu.getUrlPhoto()).into(holder.urlPhoto);
     }
 
@@ -63,10 +65,13 @@ public class AdapterOrder extends RecyclerView.Adapter<AdapterOrder.OrderViewHol
             nama_menu = itemView.findViewById(R.id.tvNamaMenu);
             kuantitas = itemView.findViewById(R.id.tvKuantitas);
             urlPhoto = itemView.findViewById(R.id.urlPhoto);
-
         }
         TextView nama_menu, kuantitas;
         ImageView urlPhoto;
+    }
+
+    public String convertPrefix(String value) {
+        return "x" + value;
     }
 
 }

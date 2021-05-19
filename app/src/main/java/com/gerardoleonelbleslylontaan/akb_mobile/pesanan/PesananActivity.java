@@ -187,7 +187,6 @@ public class PesananActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(context, response.optString("message"), Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override

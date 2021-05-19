@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -22,6 +23,8 @@ import com.gerardoleonelbleslylontaan.akb_mobile.BuildConfig;
 import com.gerardoleonelbleslylontaan.akb_mobile.R;
 import com.gerardoleonelbleslylontaan.akb_mobile.api.MenuAPI;
 import com.gerardoleonelbleslylontaan.akb_mobile.entity.Cart;
+import com.gerardoleonelbleslylontaan.akb_mobile.entity.Menu;
+import com.gerardoleonelbleslylontaan.akb_mobile.menu.MenuActivity;
 import com.gerardoleonelbleslylontaan.akb_mobile.menu.SharedPref;
 import com.google.android.material.button.MaterialButton;
 
@@ -45,13 +48,13 @@ public class FinalCartActivity extends AppCompatActivity {
     Context context;
     SharedPref sharedPref;
     private List<Cart> listCart;
-//    String id = sharedPref.getIdReservasi();
     TextView displayTotalHarga;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_cart);
+        sharedPref = new SharedPref(this);
         context = this.getApplicationContext();
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +91,7 @@ public class FinalCartActivity extends AppCompatActivity {
     {
         RequestQueue queue = Volley.newRequestQueue(this.getApplicationContext());
 
-        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, MenuAPI.URL_GET_ORDER + "64",
+        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, MenuAPI.URL_GET_ORDER + sharedPref.getIdReservasi(),
                 null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -139,7 +142,34 @@ public class FinalCartActivity extends AppCompatActivity {
 
     public void bayarSekarang()
     {
+        RequestQueue queue = Volley.newRequestQueue(this.getApplicationContext());
 
+        final JsonObjectRequest stringRequest = new JsonObjectRequest(GET, MenuAPI.URL_END_ORDER + sharedPref.getIdReservasi(),
+                null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                System.out.println("MASUK TRY");
+                sharedPref.setIsLogin(false);
+                startActivity(new Intent(FinalCartActivity.this, MenuActivity.class));
+                finish();
+
+                Toast.makeText(context, response.optString("message"), Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + BuildConfig.token);
+                return params;
+            }
+        };
+        queue.add(stringRequest);
     }
 
     public String convertToCurrency(String value) {

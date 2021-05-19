@@ -44,7 +44,8 @@ public class AdapterFinalCart extends RecyclerView.Adapter<AdapterFinalCart.Fina
         final Cart cart = listCart.get(position);
         holder.nama_menu.setText(cart.getNama_menu());
         holder.total_harga.setText(convertToCurrency(cart.getTotal_harga()));
-        holder.jumlah.setText(cart.getJumlah());
+        String tempKuantitas = "x" + cart.getJumlah();
+        holder.jumlah.setText(tempKuantitas);
     }
 
     public String convertToCurrency(String value) {

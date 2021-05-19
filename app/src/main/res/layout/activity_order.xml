@@ -23,6 +23,8 @@
             android:layout_marginLeft="15dp"
             android:fontFamily="@font/proximanovaregular"
             android:textSize="25sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             android:text="Order Cart List"/>
 
     </LinearLayout>
@@ -31,9 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingRight="20dp"
         android:layout_margin="20dp"
         android:layout_below="@+id/topbar">
 

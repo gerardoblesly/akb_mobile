@@ -12,7 +12,8 @@
         android:id="@+id/btnOrder"
         android:layout_margin="30dp"
         android:layout_gravity="bottom|right"
-        app:srcCompat="@drawable/ic_baseline_done_24"
+        app:borderWidth="0dp"
+        app:srcCompat="@drawable/ic_baseline_add_shopping_cart_24"
         android:backgroundTint="@color/colorPrimary"/>
 
     <LinearLayout
@@ -31,7 +32,9 @@
             android:layout_marginLeft="15dp"
             android:fontFamily="@font/proximanovaregular"
             android:textSize="25sp"
-            android:text="Silahkan memesan"/>
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Silahkan memesan..."/>
 
     </LinearLayout>
 
@@ -70,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="SELESAI"
+                android:text="BAYAR SEKARANG"
                 android:fontFamily="@font/proximanovaregular"
                 android:textStyle="bold"
                 android:id="@+id/btnSelesai"
@@ -86,30 +89,11 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/circularbordersolid"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMenu"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rvMenu"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

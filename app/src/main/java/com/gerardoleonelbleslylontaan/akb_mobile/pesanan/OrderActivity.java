@@ -55,7 +55,7 @@ public class OrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
-
+        sharedPref = new SharedPref(this);
         //dari string
         String menu = getIntent().getStringExtra("Order");
 

@@ -15,12 +15,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.gerardoleonelbleslylontaan.akb_mobile.BuildConfig;
 import com.gerardoleonelbleslylontaan.akb_mobile.MainActivity;
 import com.gerardoleonelbleslylontaan.akb_mobile.api.MenuAPI;
 import com.gerardoleonelbleslylontaan.akb_mobile.pesanan.PesananActivity;
@@ -29,6 +31,9 @@ import com.google.zxing.Result;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -58,11 +63,11 @@ public class QrCodeActivity extends AppCompatActivity implements ZXingScannerVie
         mScannerView.startCamera();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mScannerView.stopCamera();
-    }
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        mScannerView.stopCamera();
+//    }
 
     public void askCameraPermission(String permission, int requestCode) {
         if (ContextCompat.checkSelfPermission(QrCodeActivity.this, permission)
@@ -109,19 +114,20 @@ public class QrCodeActivity extends AppCompatActivity implements ZXingScannerVie
     }
 
     @Override
-    public void handleResult(Result rawResult) {
+    public void handleResult(Result rawResult)
+    {
         Log.v("TAG", rawResult.getText());
         Log.v("TAG", rawResult.getBarcodeFormat().toString());
-        String[] temp = rawResult.getText().split("[;]", 0);
+        String[] temp = rawResult.getText().split(";");
+        System.out.println(temp);
         id = temp[0];
         name = temp[1];
         table = temp[2];
+        System.out.println(id);
+        System.out.println(name);
+        System.out.println(table);
 
-        //Pendeklarasian queue
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-
-        //Meminta tanggapan string dari URL yang telah disediakan menggunakan method GET
-        //untuk request ini tidak memerlukan parameter
 
         StringRequest stringRequest = new StringRequest(GET, MenuAPI.URL_QR + id
                 , new Response.Listener<String>() {
@@ -129,7 +135,7 @@ public class QrCodeActivity extends AppCompatActivity implements ZXingScannerVie
             public void onResponse(String response) {
                 try {
                     JSONObject obj = new JSONObject(response);
-
+                    Toast.makeText(QrCodeActivity.this, obj.getString("status"), Toast.LENGTH_SHORT).show();
                     if(obj.getString("status").equalsIgnoreCase("1"))
                     {
                         startActivity(new Intent(QrCodeActivity.this, PesananActivity.class));
@@ -137,7 +143,7 @@ public class QrCodeActivity extends AppCompatActivity implements ZXingScannerVie
                         sharedPref.setIdReservasi(id);
                         sharedPref.setNama(name);
                         sharedPref.setNoMeja(table);
-//                        sharedPref.setIsLogin(true);
+                        sharedPref.setIsLogin(true);
                     }
                     else if(obj.getString("status").equalsIgnoreCase("2"))
                     {
@@ -149,16 +155,25 @@ public class QrCodeActivity extends AppCompatActivity implements ZXingScannerVie
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Toast.makeText(QrCodeActivity.this, "KEKW", Toast.LENGTH_SHORT).show();
                 }
+                finish();
+                mScannerView.stopCamera();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(),
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(QrCodeActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(QrCodeActivity.this, "COCOTEH", Toast.LENGTH_SHORT).show();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + BuildConfig.token);
+                return params;
+            }
+        };;
         queue.add(stringRequest);
-//        mScannerView.resumeCameraPreview(this);
     }
 }

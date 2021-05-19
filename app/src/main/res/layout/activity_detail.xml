@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:id="@+id/btnBack"
+            app:borderWidth="0px"
             android:backgroundTint="@color/colorPrimary"
             android:src="@drawable/ic_baseline_arrow_back_24"
             />
@@ -58,6 +59,7 @@
             android:fontFamily="@font/proximanovaregular"
             android:text="Nama Menu Disini"
             android:textSize="30sp"
+            android:textColor="@color/black"
             android:textStyle="bold"
             />
 
@@ -66,7 +68,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/tvDeskripsi"
             android:layout_marginTop="5dp"
+            android:layout_marginLeft="1dp"
             android:fontFamily="@font/proximanovaregular"
+            android:textStyle=""
             android:text="Deksripsi akan muncul disini secara banyak sekali sampai tidak muat pokoknya sampai mantap sklai anjir yuh enak"
             android:textSize="15sp"/>
 

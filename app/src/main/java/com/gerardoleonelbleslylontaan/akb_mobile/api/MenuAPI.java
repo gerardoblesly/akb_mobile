@@ -7,5 +7,6 @@ public class MenuAPI {
     public static final String URL_SELECT_EVENT = ROOT_API + "menu";
     public static final String URL_ADD_ORDER = ROOT_API + "detailTransaksi";
     public static final String URL_GET_ORDER = ROOT_API + "getAllItem/";
+    public static final String URL_END_ORDER = ROOT_API + "endTransaction/";
     public static final String URL_QR = ROOT_API + "afterScan/";
 }
