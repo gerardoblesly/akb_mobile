@@ -50,7 +50,7 @@ public class AdapterMenu extends RecyclerView.Adapter<AdapterMenu.MenuViewHolder
         holder.nama_menu.setText(menu.getNama_menu());
 //        holder.deskripsi.setText(menu.getDeskripsi());
         holder.harga.setText(convertToCurrency(menu.getHarga()));
-        Glide.with(holder.itemView.getContext()).load("http://192.168.18.6:8000/urlPhoto/"+ menu.getUrlPhoto()).into(holder.urlPhoto);
+        Glide.with(holder.itemView.getContext()).load("https://akbp3l.gerardoleonel.com/public/urlPhoto/"+ menu.getUrlPhoto()).into(holder.urlPhoto);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

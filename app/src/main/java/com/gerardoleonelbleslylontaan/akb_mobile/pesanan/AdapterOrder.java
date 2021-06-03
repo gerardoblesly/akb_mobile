@@ -48,7 +48,7 @@ public class AdapterOrder extends RecyclerView.Adapter<AdapterOrder.OrderViewHol
         holder.nama_menu.setText(menu.getNama_menu());
         String tempText = "x" + String.valueOf(menu.getKuantitas());
         holder.kuantitas.setText(tempText);
-        Glide.with(holder.itemView.getContext()).load("http://192.168.18.6:8000/urlPhoto/"+ menu.getUrlPhoto()).into(holder.urlPhoto);
+        Glide.with(holder.itemView.getContext()).load("https://akbp3l.gerardoleonel.com/public/urlPhoto/"+ menu.getUrlPhoto()).into(holder.urlPhoto);
     }
 
 

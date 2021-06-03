@@ -37,7 +37,7 @@ public class DetailActivity extends AppCompatActivity {
         namaMenu.setText(menu.getNama_menu());
         deskripsi.setText(menu.getDeskripsi());
         harga.setText(convertToCurrency(menu.getHarga()));
-        Glide.with(this).load("http://192.168.18.6:8000/urlPhoto/"+ menu.getUrlPhoto()).into(urlPhoto);
+        Glide.with(this).load("https://akbp3l.gerardoleonel.com/public/urlPhoto/"+ menu.getUrlPhoto()).into(urlPhoto);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
